@@ -1,0 +1,430 @@
+openapi: 3.0.0
+
+info:
+  title: Delilah Restó
+  version: 1.0.0
+  contact:
+    name: Kevin Andrés Arango Galeano
+    url: https://www.linkedin.com/in/kevinandresarangogaleano
+    email: karango.1023@gmail.com
+  description: Una API REST para gestion de pedidos de un restaurante
+
+servers:
+  - url: http://localhost:3000
+    description: Desarrollo
+    variables:
+      port:
+        default: '3000'
+
+  - url: www.github.com
+    description: Producción
+
+
+paths:
+  /foods:
+    get:
+      tags:
+      - "FOODS"
+      description: Obtiene la lista de platos de comida
+      responses:
+        200:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Success request"
+                    data:
+                      example:
+                        id: 1
+                        name: "Hamburguesa"
+                        price: 12,000
+                        description: "Rica hamburguesa con pan artesanal"
+                        type_food: "Plato fuerte"
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+    post: 
+      tags:
+      - "FOODS"
+      description: Agrega un nuevo plato de comida al restaurante
+      responses:
+        201:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                  properties:
+                    name:
+                      type: string
+                      example: "Hamburguesa"
+                    price: 
+                      type: number
+                      format: double
+                      example: 12000
+                    description:
+                      type: string
+                      example: "Rica hamburguesa con pan artesanal"
+                    id_type_food:
+                      type: integer
+                      example: 1
+
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "You haven't permission a administrador"
+
+  /foods/{id_food}:
+    put: 
+      tags:
+      - "FOODS"
+      description: Actualiza informacion de un plato de comida
+      responses:
+        201:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                  properties:
+                    name:
+                      type: string
+                      example: "Hamburguesa"
+                    price: 
+                      type: number
+                      format: double
+                      example: 12500
+                    description:
+                      type: string
+                      example: "Rica hamburguesa con 200g de carne"
+                    id_type_food:
+                      type: integer
+                      example: 1
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "You haven't permission a administrador"
+    delete: 
+      tags:
+      - "FOODS"
+      description: Elimina un plato de comida del restaurante
+      responses:
+        201:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Success request"
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "You haven't permission a administrador"
+
+  /users/register:
+    post: 
+      tags:
+      - "USERS"
+      description: Se registra un nuevo usuario a la plataforma del restaurante
+      responses:
+        201:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                  properties:
+                    username:
+                      type: string
+                      example: usuario.prueba
+                    name:
+                      type: string
+                      example: "Kevin Prueba"
+                    email: 
+                      type: string
+                      example: "prueba@email.com"
+                    phone:
+                      type: string
+                      example: "3206034158"
+                    address:
+                      type: string
+                      example: "Calle 35# 45a 58"
+                    password:
+                      type: string
+                      example: "Password01"
+                    id_role:
+                      type: integer
+                      example: 1
+
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+  /users/login:
+    post: 
+      tags:
+      - "USERS"
+      description: Se registra un nuevo usuario a la plataforma del restaurante
+      responses:
+        201:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                  properties:
+                    username:
+                      type: string
+                      example: usuario.prueba
+                    password:
+                      type: string
+                      example: "Password01"
+
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "the user data is invalid"
+
+  /users/info/{id}:
+    get:
+      tags:
+      - "USERS"
+      description: Obtiene la informacion del usuario
+      responses:
+        200:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Success request"
+                    data:
+                      example:
+                        username: "usuario.prueba"
+                        name: "Kevin Prueba"
+                        email: "prueba@email.com"
+                        phone: "3206034158"
+                        address: "Calle 35# 45a 58"
+                        password: "Password01"
+                        role: "Cliente"
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+  /orders:
+    get:
+      tags:
+      - "ORDERS"
+      description: Obtiene la lista de ordenes del restaurante
+      responses:
+        200:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Success request"
+                    data:
+                      example:
+                        state: "Preparando"
+                        hour: "12:30PM"
+                        number: 1
+                        description: "1x Hamburguesa 2x Pizza"
+                        price: 30500
+                        user: "usuario.prueba"
+                        address: "calle 45 # 44a 88"
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+  
+    post: 
+        tags:
+        - "ORDERS"
+        description: Se crea una nueva orden en la plataforma del restaurante
+        responses:
+          201:
+            description: Success request
+            content:
+              'aplplication/json':
+                schema:
+                    properties:
+                      username:
+                        type: string
+                        example: usuario.prueba
+                      password:
+                        type: string
+                        example: "Password01"
+
+          400:
+            description: Bad request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Bad request"
+
+          401:
+            description: Unauthorized
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "the user data is invalid"
+  /orders/{id_order}:
+    put: 
+      tags:
+      - "ORDERS"
+      description: Actualiza el estado del pedido
+      responses:
+        201:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                  properties:
+                    name:
+                      type: string
+                      example: "Hamburguesa"
+                    price: 
+                      type: number
+                      format: double
+                      example: 12500
+                    description:
+                      type: string
+                      example: "Rica hamburguesa con 200g de carne"
+                    id_type_food:
+                      type: integer
+                      example: 1
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "You haven't permission a administrador"
