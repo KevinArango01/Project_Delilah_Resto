@@ -7,14 +7,14 @@ also has a relational database: [Local database](https://drive.google.com/drive/
 
 ## Technologies
 these are the technologies recommended to run the project.
-[XAMPP](https://www.apachefriends.org/es/index.html)
-[HeidySQL](https://www.heidisql.com/) OR [DBEAVER](https://dbeaver.io/)
-[VISUAL STUDIO CODE](https://code.visualstudio.com/)
-[POSTMAN](https://www.postman.com/)
+*[XAMPP](https://www.apachefriends.org/es/index.html)
+*[HeidySQL](https://www.heidisql.com/) OR [DBEAVER](https://dbeaver.io/)
+*[VISUAL STUDIO CODE](https://code.visualstudio.com/)
+*[POSTMAN](https://www.postman.com/)
 
 ## How to clone
-** First step: ** Run SQL scripts [Scripts] (https://drive.google.com/file/d/1a_gQ1Qqxt6g8tweuO1kEZ-blBxVhtisi/view?usp=sharing), to have the database locally
-* * Second step: ** Clone repository [Tutorial on how to clone repository in GITHUB] (https://docs.github.com/es/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from -github / cloning-a-repository)
+* **First step:** Run SQL scripts [Scripts] (https://drive.google.com/file/d/1a_gQ1Qqxt6g8tweuO1kEZ-blBxVhtisi/view?usp=sharing), to have the database locally
+* **Second step:** Clone repository [Tutorial on how to clone repository in GITHUB] (https://docs.github.com/es/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from -github / cloning-a-repository)
 
 
 ## Commands:
