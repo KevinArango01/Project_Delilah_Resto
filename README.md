@@ -39,4 +39,4 @@ npm start
 ```
 
 ### Notes
-Remember that before running the project you must have run the SQL scripts and have the independent database server initialized.
+Remember that before running the project modify the .env file with your database credentials, run the SQL scripts and have the independent database server initialized.
