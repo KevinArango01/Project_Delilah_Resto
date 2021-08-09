@@ -2,7 +2,7 @@
 REST API for an online ordering system for a restaurant, that allows CRUD operations on a relational data structure
 
 ## Content
-This project has two branches: master and develop. **develop** is to test in the development environment and **master**, once tested in the development environment it goes to master.
+This project has three branches: main, master and develop. **develop** is to test in the development environment, **master**, once tested in the development environment it goes to master and **main** is a default branche.
 also has a relational database: [Local database](https://drive.google.com/drive/folders/1kIONYeDT7afhJtqWrec0xwjCBeXUxon8?usp=sharing)
 
 ## Technologies
