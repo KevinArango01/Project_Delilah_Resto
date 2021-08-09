@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.1
 
 info:
   title: Delilah Restó
@@ -34,16 +34,13 @@ paths:
               schema:
                 type: array
                 items:
-                  properties:
-                    menssage:
-                      example: "Success request"
-                    data:
-                      example:
-                        id: 1
-                        name: "Hamburguesa"
-                        price: 12,000
-                        description: "Rica hamburguesa con pan artesanal"
-                        type_food: "Plato fuerte"
+                  example:
+                      id: 1
+                      name: "Hamburguesa"
+                      price: 12,000
+                      description: "Rica hamburguesa con pan artesanal"
+                      typeFood: 1
+                  
         400:
           description: Bad request
           content:
@@ -55,10 +52,38 @@ paths:
                     menssage:
                       example: "Bad request"
 
+  /food:
     post: 
       tags:
       - "FOODS"
       description: Agrega un nuevo plato de comida al restaurante
+      parameters:
+      - name: "Authorization"
+        in: header
+        description: "Token de autorización"
+        required: true
+        schema:
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+      requestBody:
+        content:
+          'aplplication/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "Nombre del plato de comida"
+                price:
+                  type: number
+                  description: "Precio del plato de comida"
+                  example: 12000
+                description:
+                  type: string
+                  description: "Descripcion del plato de comida"
+                typeFood:
+                  type: number
+                  description: "Tipo de comida (1)Plato fuerte, (2)Plato suave, (3)Entrada, (4)Postre, (5)Jugo, (6)Coctel "
+                  example: 1
       responses:
         201:
           description: Success request
@@ -66,19 +91,15 @@ paths:
             'aplplication/json':
               schema:
                   properties:
-                    name:
-                      type: string
-                      example: "Hamburguesa"
-                    price: 
-                      type: number
-                      format: double
-                      example: 12000
-                    description:
-                      type: string
-                      example: "Rica hamburguesa con pan artesanal"
-                    id_type_food:
-                      type: integer
-                      example: 1
+                    data:
+                      example:
+                        name: "Hamburguesa"
+                        price: 12000
+                        description: "Rica hamburguesa con pan artesanal"
+                        typeFood: 1
+                    
+                    menssage: 
+                      example: "INSERT SUCCESS"
 
         400:
           description: Bad request
@@ -100,33 +121,53 @@ paths:
                 items:
                   properties:
                     menssage:
-                      example: "You haven't permission a administrador"
+                      example: "Not authorized, you do not have administrator permissions"
 
-  /foods/{id_food}:
+  /food/{id}:
     put: 
       tags:
       - "FOODS"
       description: Actualiza informacion de un plato de comida
+      parameters:
+      - name: "id"
+        in: path
+        description: "ID del plato que se va actualizar"
+        required: true
+        schema:
+          example: 'http://localhost:3000/food/6'
+      requestBody:
+        content:
+          'aplplication/json':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: "Nombre del plato de comida"
+                price:
+                  type: number
+                  description: "Precio del plato de comida"
+                  example: 12000
+                description:
+                  type: string
+                  description: "Descripcion del plato de comida"
+                typeFood:
+                  type: number
+                  description: "Tipo de comida (1)Plato fuerte, (2)Plato suave, (3)Entrada, (4)Postre, (5)Jugo, (6)Coctel "
+                  example: 1
       responses:
-        201:
+        200:
           description: Success request
           content:
             'aplplication/json':
               schema:
                   properties:
-                    name:
-                      type: string
-                      example: "Hamburguesa"
-                    price: 
-                      type: number
-                      format: double
-                      example: 12500
-                    description:
-                      type: string
-                      example: "Rica hamburguesa con 200g de carne"
-                    id_type_food:
-                      type: integer
-                      example: 1
+                      id: 
+                        example: "6"
+                      menssage: 
+                        example: "UPDATE SUCCESS"
+                      status: 
+                        example: true
         400:
           description: Bad request
           content:
@@ -147,13 +188,20 @@ paths:
                 items:
                   properties:
                     menssage:
-                      example: "You haven't permission a administrador"
+                      example: "Not authorized, you do not have administrator permissions"
     delete: 
       tags:
       - "FOODS"
       description: Elimina un plato de comida del restaurante
+      parameters:
+      - name: "id"
+        in: path
+        description: "ID del plato que se va a eliminar"
+        required: true
+        schema:
+          example: 'http://localhost:3000/food/6'
       responses:
-        201:
+        200:
           description: Success request
           content:
             'aplplication/json':
@@ -161,8 +209,12 @@ paths:
                 type: array
                 items:
                   properties:
+                    id:
+                      example: "6"
                     menssage:
                       example: "Success request"
+                    status:
+                      example: true
         400:
           description: Bad request
           content:
@@ -183,41 +235,65 @@ paths:
                 items:
                   properties:
                     menssage:
-                      example: "You haven't permission a administrador"
+                      example: "Not authorized, you do not have administrator permissions"
 
-  /users/register:
+  /signup/:
     post: 
       tags:
       - "USERS"
       description: Se registra un nuevo usuario a la plataforma del restaurante
+      requestBody:
+        content:
+          'aplplication/json':
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: "Usuario a registrar"
+                name:
+                  type: string
+                  description: "Nombre completo del usuario a registrar"
+                email:
+                  type: string
+                  description: "Correo electronico del usuario a registrar"
+                phone:
+                  type: string
+                  description: "Numero de celular del usuario a registrar"
+                address:
+                  type: string
+                  description: "Dirección del usuario a registrar"
+                password: 
+                  type: string
+                  description: "contraseña del usuario a registrar"
+                role: 
+                  type: number
+                  example: 1
+                  description: "Role del usuario a registrar (1)cliente, (2)Administrador"
+       
       responses:
         201:
           description: Success request
           content:
             'aplplication/json':
               schema:
+                type: array
+                items:
                   properties:
-                    username:
-                      type: string
-                      example: usuario.prueba
-                    name:
-                      type: string
-                      example: "Kevin Prueba"
-                    email: 
-                      type: string
-                      example: "prueba@email.com"
-                    phone:
-                      type: string
-                      example: "3206034158"
-                    address:
-                      type: string
-                      example: "Calle 35# 45a 58"
-                    password:
-                      type: string
-                      example: "Password01"
-                    id_role:
-                      type: integer
-                      example: 1
+                      data:
+                        example:
+                          username: "usuario.prueba"
+                          name: "Kevin Prueba"
+                          email: "prueba@email.com"
+                          phone: "3206034158"
+                          address: "Calle 35# 45a 58"
+                          password: "Password01"
+                          role: 1
+                      menssage: 
+                        example: "INSERT SUCCESS"
+                      status:
+                        example: true
+                      
 
         400:
           description: Bad request
@@ -230,24 +306,46 @@ paths:
                     menssage:
                       example: "Bad request"
 
-  /users/login:
+  /signin:
     post: 
       tags:
       - "USERS"
       description: Se registra un nuevo usuario a la plataforma del restaurante
+      requestBody:
+        content:
+          'aplplication/json':
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: "Usuario para iniciar session"
+                  example: "ADMINISTRADOR"
+                password:
+                  type: string
+                  description: "Contraseña del usuario"
+                  example: "ADM123"
       responses:
         201:
           description: Success request
           content:
             'aplplication/json':
               schema:
-                  properties:
-                    username:
-                      type: string
-                      example: usuario.prueba
-                    password:
-                      type: string
-                      example: "Password01"
+                  type: array
+                  items:
+                    properties:
+                        User:
+                          example:
+                            id: 1
+                            username: "ADMINISTRADOR"
+                            name: "ADMINISTRADOR"
+                            email: "ADMINISTRADOR@GMAIL.COM"
+                            phone: "3206034875"
+                            address: "CALLE 94 # 58 A 25"
+                            password: "ADM123"
+                            role: 2
+                        AccessToken: 
+                          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiVXNlciI6IkFETUlOSVNUUkFET1IiLCJSb2xlIjoyLCJpYXQiOjE2MjgzMTYxNDksImV4cCI6MTYyODMxOTc0OX0.qNzNkn84-2PA2DYt2SVxQA7ZZ8OyGUZESS7eRkRYbTc"
 
         400:
           description: Bad request
@@ -271,11 +369,19 @@ paths:
                     menssage:
                       example: "the user data is invalid"
 
-  /users/info/{id}:
+  /userdata/{id}:
     get:
       tags:
       - "USERS"
       description: Obtiene la informacion del usuario
+      parameters:
+      - name: "id"
+        in: path
+        description: "ID del usuario del cual se espera obtener la información"
+        example: 'http://localhost:3000/userdata/2'
+        required: true
+        schema:
+          type: string
       responses:
         200:
           description: Success request
@@ -285,9 +391,7 @@ paths:
                 type: array
                 items:
                   properties:
-                    menssage:
-                      example: "Success request"
-                    data:
+                    User:
                       example:
                         username: "usuario.prueba"
                         name: "Kevin Prueba"
@@ -296,6 +400,8 @@ paths:
                         address: "Calle 35# 45a 58"
                         password: "Password01"
                         role: "Cliente"
+                    status:
+                      example: "true"
         400:
           description: Bad request
           content:
@@ -312,6 +418,13 @@ paths:
       tags:
       - "ORDERS"
       description: Obtiene la lista de ordenes del restaurante
+      parameters:
+      - name: "Authorization"
+        in: header
+        description: "Token de autorización"
+        required: true
+        schema:
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
       responses:
         200:
           description: Success request
@@ -321,17 +434,23 @@ paths:
                 type: array
                 items:
                   properties:
-                    menssage:
-                      example: "Success request"
-                    data:
+                    orders:
                       example:
-                        state: "Preparando"
-                        hour: "12:30PM"
-                        number: 1
-                        description: "1x Hamburguesa 2x Pizza"
-                        price: 30500
-                        user: "usuario.prueba"
-                        address: "calle 45 # 44a 88"
+                        id: 30
+                        userName: "ADMINISTRADOR"
+                        email: "ADMINISTRADOR@GMAIL.COM"
+                        address: "CALLE 94 # 58 A 25"
+                        phone: "3206034875"
+                        date: "2021-04-08T05:00:00.000Z"
+                        totalPrice: 160000
+                        status: "NUEVO"
+                        typePayment: "EFECTIVO"
+                        orderDetails:
+                          id: 28
+                          quantity: 5
+                          foodName: Mojito
+                          description: "Vocka con un suave sabor a menta"
+                          price: 8000
         400:
           description: Bad request
           content:
@@ -342,11 +461,46 @@ paths:
                   properties:
                     menssage:
                       example: "Bad request"
-  
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Not authorized, Token null"
+
+  /order:
     post: 
         tags:
         - "ORDERS"
         description: Se crea una nueva orden en la plataforma del restaurante
+        parameters:
+        - name: "Authorization"
+          in: header
+          description: "Token de autorización"
+          required: true
+          schema:
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+        requestBody:
+          content:
+            'aplplication/json':
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    description: "Fecha en la cual se genero la orden"
+                  idTypePayment:
+                    type: number
+                    description: "Tipo de forma a pagar (1)Efectivo, (2)Transferecia, (3)Tarjeta debito, (4)Tarjeta credito"
+                    example: 1
+                  idOrderStatus:
+                    type: number
+                    description: "Estado de la orden (1)Nuevo, (2)Confirmado, (3)Preparado, (4)Enviado, (5)Entregado"
+                    example: 1
         responses:
           201:
             description: Success request
@@ -354,12 +508,16 @@ paths:
               'aplplication/json':
                 schema:
                     properties:
-                      username:
-                        type: string
-                        example: usuario.prueba
-                      password:
-                        type: string
-                        example: "Password01"
+                      data:
+                        example:
+                          id: 32
+                          idUser: 1,
+                          date: "2021-04-08T05:00:00.000Z"
+                          totalPrice: 36000
+                          idTypePayment: 1
+                          idOrderStatus: 1
+                      menssage:
+                        example: INSERT SUCCESS
 
           400:
             description: Bad request
@@ -381,12 +539,37 @@ paths:
                   items:
                     properties:
                       menssage:
-                        example: "the user data is invalid"
-  /orders/{id_order}:
+                        example: "Not authorized, Token invalid"
+
+  /order/{id}:
     put: 
       tags:
       - "ORDERS"
       description: Actualiza el estado del pedido
+      parameters:
+        - name: "id"
+          in: path
+          description: "ID de la orden de la cual se espera actualizar el estado"
+          example: 'http://localhost:3000/order/updatestatus/30'
+          required: true
+          schema:
+            type: string
+        - name: "Authorization"
+          in: header
+          description: "Token de autorización"
+          required: true
+          schema:
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+      requestBody:
+          content:
+            'aplplication/json':
+              schema:
+                type: object
+                properties:
+                  idOrderStatus:
+                    type: number
+                    description: "Estado de la orden (1)Nuevo, (2)Confirmado, (3)Preparado, (4)Enviado, (5)Entregado"
+                    example: 1
       responses:
         201:
           description: Success request
@@ -394,19 +577,12 @@ paths:
             'aplplication/json':
               schema:
                   properties:
-                    name:
-                      type: string
-                      example: "Hamburguesa"
-                    price: 
-                      type: number
-                      format: double
-                      example: 12500
-                    description:
-                      type: string
-                      example: "Rica hamburguesa con 200g de carne"
-                    id_type_food:
-                      type: integer
-                      example: 1
+                      id: 
+                        example: "30"
+                      menssage: 
+                        example: "UPDATE SUCCESS"
+                      status: 
+                        example: true
         400:
           description: Bad request
           content:
@@ -428,3 +604,252 @@ paths:
                   properties:
                     menssage:
                       example: "You haven't permission a administrador"
+
+  /shoppingcart:
+    get:
+        tags:
+        - "SHOPPING_CART"
+        description: Obtiene la lista de los platos de comida que se van a comprar
+        parameters:
+        - name: "Authorization"
+          in: header
+          description: "Token de autorización"
+          required: true
+          schema:
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+        responses:
+          200:
+            description: Success request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        example: "1"
+                      quantity: 
+                        example: 3
+                      idFood:
+                        example: 5
+                      idOrder: 
+                        example: 30
+                      Food:
+                        properties:
+                          id:
+                            example: 5
+                          name:
+                            example: "Mojito"
+                          price: 
+                            example: 8000
+                          description: 
+                            example: "Vocka con un suave sabor a menta"
+                          typeFood: 
+                            example: 5
+                      
+          400:
+            description: Bad request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Bad request"
+          
+          401:
+            description: Token invalid
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: Not authorized, Token invalid
+
+  /itemshoppingcart:         
+    post:
+        tags:
+        - "SHOPPING_CART"
+        description: Agregar un nuevo plato de comida en el carrito de compras
+        parameters:
+        - name: "Authorization"
+          in: header
+          description: "Token de autorización"
+          required: true
+          schema:
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+        requestBody:
+          content:
+            'aplplication/json':
+              schema:
+                type: object
+                properties:
+                  quantity:
+                    type: number
+                    example: 3
+                    description: "Cantidad del pedido"
+                  idFood:
+                    type: number
+                    example: 1
+                    description: "ID del plato de comida"         
+        responses:
+          200:
+            description: Success request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      data:
+                        example:
+                          id: 1
+                          quantity: 3
+                          idFood: 1
+                          idOrder: 30
+                      menssage:
+                        example: INSERT SUCCESS
+          400:
+            description: Bad request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Bad request"          
+          401:
+            description: Unauthorized
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Not authorized, Token invalid"
+
+  /itemshoppingcart/{id}:
+    put:
+        tags:
+        - "SHOPPING_CART"
+        description: Modificar la cantidad de una comida en el carrito de compras
+        parameters:
+        - name: "id"
+          in: path
+          description: "ID del item que se va actualizar"
+          required: true
+          schema:
+            example: 'http://localhost:3000/itemshoppingcart/2'
+        - name: "Authorization"
+          in: header
+          description: "Token de autorización"
+          required: true
+          schema:
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+        requestBody:
+          content:
+            'aplplication/json':
+              schema:
+                type: object
+                properties:
+                  quantity:
+                    type: number
+                    example: 3
+                    description: "Usuario a registrar"
+                  idFood:
+                    type: number
+                    example: 1
+                    description: "Nombre completo del usuario a registrar"         
+        responses:
+          200:
+            description: Success request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        example: 2
+                      menssage: 
+                        example: UPDATE SUCCESS
+                      status: 
+                          example: true
+          400:
+            description: Bad request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Bad request"          
+          401:
+            description: Unauthorized
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Not authorized, Token invalid"
+
+    delete:
+        tags:
+        - "SHOPPING_CART"
+        description: Eliminar un plato de comida en el carrito de compras
+        parameters:
+        - name: "id"
+          in: path
+          description: "ID del item que se va a eliminar"
+          required: true
+          schema:
+            example: 'http://localhost:3000/itemshoppingcart/27'
+        - name: "Authorization"
+          in: header
+          description: "Token de autorización"
+          required: true
+          schema:
+            example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+        responses:
+          200:
+            description: Success request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        example: 27
+                      menssage: 
+                        example: DELETE SUCCESS
+                      status: 
+                          example: true
+          400:
+            description: Bad request
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Bad request"          
+          401:
+            description: Unauthorized
+            content:
+              'aplplication/json':
+                schema:
+                  type: array
+                  items:
+                    properties:
+                      menssage:
+                        example: "Not authorized, Token invalid"
