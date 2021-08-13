@@ -36,6 +36,7 @@ const {
     createOrder,
     getAllOrders,
     updateStatusOrder,
+    deleteOrderById,
 } = require('./lib/interfaces/controllers/OrdersController')
 
 
@@ -63,6 +64,7 @@ app.delete('/itemshoppingcart/:id',AuthMiddleware, deleteDetail)
 app.post('/generateorder',AuthMiddleware, createOrder)
 app.get('/orders',AuthMiddleware, getAllOrders)
 app.put('/order/updatestatus/:id',AuthMiddleware, PermissionMiddleware, updateStatusOrder)
+app.delete('/order/:id',AuthMiddleware, PermissionMiddleware, deleteOrderById)
 
 app.listen(port, () => console.log(`Listening on: http://localhost:${port}`))
 

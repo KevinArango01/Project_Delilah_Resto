@@ -129,6 +129,12 @@ paths:
       - "FOODS"
       description: Actualiza informacion de un plato de comida
       parameters:
+      - name: "Authorization"
+        in: header
+        description: "Token de autorización"
+        required: true
+        schema:
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
       - name: "id"
         in: path
         description: "ID del plato que se va actualizar"
@@ -194,6 +200,12 @@ paths:
       - "FOODS"
       description: Elimina un plato de comida del restaurante
       parameters:
+      - name: "Authorization"
+        in: header
+        description: "Token de autorización"
+        required: true
+        schema:
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
       - name: "id"
         in: path
         description: "ID del plato que se va a eliminar"
@@ -604,6 +616,59 @@ paths:
                   properties:
                     menssage:
                       example: "You haven't permission a administrador"
+    delete: 
+      tags:
+      - "ORDERS"
+      description: Elimina una orden del sistema
+      parameters:
+      - name: "Authorization"
+        in: header
+        description: "Token de autorización"
+        required: true
+        schema:
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiVXNlciI6InVzdWFyaW8ucHJ1ZWJhIiwiUm9sZSI6MSwiaWF0IjoxNjI4NDYyNTUyLCJleHAiOjE2Mjg0NjYxNTJ9.CmgaXnU0JAElmhEP0nlmdSE1XbKBKqCmbNumxzyGMbc'
+      - name: "id"
+        in: path
+        description: "ID de la orden que se va a eliminar"
+        required: true
+        schema:
+          example: 'http://localhost:3000/order/30'
+      responses:
+        200:
+          description: Success request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      example: "30"
+                    menssage:
+                      example: "DELETE SUCCESS"
+                    status:
+                      example: true
+        400:
+          description: Bad request
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Bad request"
+
+        401:
+          description: Unauthorized
+          content:
+            'aplplication/json':
+              schema:
+                type: array
+                items:
+                  properties:
+                    menssage:
+                      example: "Not authorized, you do not have administrator permissions"
 
   /shoppingcart:
     get:
